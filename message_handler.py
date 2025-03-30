@@ -30,7 +30,11 @@ class Handler:
                 await self._handle_command(message.channel.id, command, clean_content)
             else:
                 # If not a command, send to n8n webhook
-                return self._send_to_n8n_webhook(clean_content)
+                response = self._send_to_n8n_webhook(clean_content)
+                if response.status_code == 200:
+                    await self.send_message_to_discord(message.channel.id, 'Message sent to n8n webhook successfully.')
+                else:
+                    await self.send_message_to_discord(message.channel.id, 'Failed to send message to n8n webhook.')
     
     async def _handle_command(self, channel_id, command, content):
         """
@@ -70,6 +74,10 @@ class Handler:
 
         # Send the payload to N8N webhook
         response = requests.post(self.webhook_url, payload, timeout=10, verify=False)
+        if response.status_code == 200:
+            logging.info('Data sent to n8n webhook successfully.')
+        else:
+            logging.error(f'Failed to send data to n8n webhook. Status code: {response.status_code}')
         return response
     
     async def send_message_to_discord(self, channel_id, message):
