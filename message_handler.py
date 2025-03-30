@@ -50,14 +50,16 @@ class Handler:
         """
         Handle various bot commands.
         """
+        logging.info(f"Command received: {command}")
         match command:
+            
             case "/commands":
                 n = "\n".join(self.available_commands)
                 await self.send_message_to_discord(
                     channel_id, f"Available commands: \n{n}"
                 )
             case "/yt":
-                self._handle_yt_command(content, channel_id)
+                await self._handle_yt_command(content, channel_id)
 
     async def _handle_yt_command(self, content, channel_id):
         try:
