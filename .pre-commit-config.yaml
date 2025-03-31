@@ -1,12 +1,63 @@
 repos:
-- repo: https://github.com/astral-sh/ruff-pre-commit
-  # Ruff version.
-  rev: v0.11.2
-  hooks:
-    # Run the linter.
-    - id: ruff
-      types_or: [ python, pyi ]
-      args: [ --fix ]
-    # Run the formatter.
-    - id: ruff-format
-      types_or: [ python, pyi ]
+  - repo: local
+    hooks:
+      # Ruff hooks https://github.com/astral-sh/ruff-pre-commit
+      - id: ruff # Linter
+        name: ruff
+        description: "Run 'ruff' for extremely fast Python linting"
+        entry: ruff check --force-exclude
+        language: system
+        require_serial: true
+        types_or: [ python, pyi ]
+        args: [ --fix]
+        stages: [pre-commit, manual]
+
+      - id: ruff-format # Formatter
+        name: ruff-format
+        description: "Run 'ruff format' for extremely fast Python formatting"
+        entry: ruff format --force-exclude
+        language: system
+        exclude:
+          '^(docs/|notebooks/demo_custom_argparse/)'
+        types_or: [ python, pyi, jupyter ]
+        require_serial: true
+        stages: [pre-commit, manual]
+
+      # Static type checker https://github.com/pre-commit/mirrors-mypy
+      - id: mypy
+        name: mypy
+        description: 'Mypy'
+        entry: mypy
+        language: system
+        verbose: true
+        args:
+          [
+            --check-untyped-defs,
+            --namespace-packages,
+            "."
+          ]
+        require_serial: true
+        pass_filenames: false
+        stages: [pre-commit, manual]
+
+      # Dead code https://github.com/jendrikseipp/vulture
+      - id: vulture
+        name: vulture
+        description: Find unused Python code.
+        entry: vulture
+        args: [".", --min-confidence, "100", "--exclude", "*settings.py,*/docs/*.py,*/test_*.py,*/venv/*.py"]
+        language: system
+        pass_filenames: false
+        require_serial: true
+        stages: [pre-commit, manual]
+
+      # Unit tests with pytest
+      - id: pytest-check
+        #stages: [push]
+        types: [python]
+        name: pytest-check
+        entry: python -m pytest
+        language: system
+        pass_filenames: false
+        always_run: true
+        stages: [pre-commit, manual]
