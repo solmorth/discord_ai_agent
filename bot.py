@@ -1,5 +1,4 @@
 import discord
-import requests
 import os
 
 from logging import getLogger

@@ -52,7 +52,6 @@ class Handler:
         """
         logging.info(f"Command received: {command}")
         match command:
-            
             case "/commands":
                 n = "\n".join(self.available_commands)
                 await self.send_message_to_discord(
@@ -76,13 +75,13 @@ class Handler:
             return
 
         await self.send_message_to_discord(
-            channel_id, f"Fetching subtitles for provided URL"
+            channel_id, "Fetching subtitles for provided URL"
         )
         yt = YouTube(url)
         subtitles = yt.get_subtitles()
         if subtitles:
             await self.send_message_to_discord(
-                channel_id, f"Subtitles found, trying to summarize"
+                channel_id, "Subtitles found, trying to summarize"
             )
             # Send the subtitles to n8n webhook
             response = self._send_to_n8n_webhook(
