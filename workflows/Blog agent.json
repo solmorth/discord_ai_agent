@@ -1,0 +1,197 @@
+{
+  "active": false,
+  "connections": {
+    "Ollama Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Blog Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Blog Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Workflow Trigger": {
+      "main": [
+        [
+          {
+            "node": "Blog Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Blog Agent": {
+      "main": [
+        [
+          {
+            "node": "Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "researchAgent": {
+      "ai_tool": [
+        [
+          {
+            "node": "Blog Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-03-31T22:24:41.946Z",
+  "id": "3TwbdLzKpZIWMWRI",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Blog agent",
+  "nodes": [
+    {
+      "parameters": {
+        "model": "llama3.1:latest",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "typeVersion": 1,
+      "position": [
+        -600,
+        20
+      ],
+      "id": "fdecd3b6-c158-4b91-945b-7bd33ac789d2",
+      "name": "Ollama Chat Model",
+      "credentials": {
+        "ollamaApi": {
+          "id": "wlWbc5n6MTeCl395",
+          "name": "Ollama PC"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "blog",
+        "contextWindowLength": 20
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        -360,
+        80
+      ],
+      "id": "5079d322-4dfc-4ff8-ac22-c5d23bfc5bc7",
+      "name": "Postgres Chat Memory",
+      "credentials": {
+        "postgres": {
+          "id": "QP34DP3MDwyGjT8V",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c827ff3b-2990-4db5-965e-3f3543113720",
+              "name": "response",
+              "value": "={{ $json.output }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "68ecbe7b-1410-45ee-8905-6d7b79f4b978",
+      "name": "Response",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -84,
+        -240
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "ee05d7ef-6c71-4929-a25c-09d6acfccfe4",
+      "name": "Execute Workflow Trigger",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1,
+      "position": [
+        -680,
+        -240
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.query }}",
+        "options": {
+          "systemMessage": "You are an AI-powered blog writer specializing in creating well-structured blog posts for a Pelican-based website. Your output should be formatted in Markdown and follow this template:\n\nmarkdown\nTitle: [Blog Post Title]  \nDate: [YYYY-MM-DD HH:MM]  \nCategory: [Category]  \nTags: [Comma-separated tags]  \nSlug: [slugified-title]  \nAuthors: [Author Name]  \nSummary: [A brief summary of the post]  \n\n## Introduction  \n\n[Engaging opening paragraph introducing the topic.]  \n\n## Main Content  \n\n[Detailed discussion of the topic, incorporating formatting elements like **bold**, *italics*, and [links](https://example.com).]  \n\n## Conclusion  \n\n[Final thoughts and key takeaways.]  \nGuidelines:\nUse a conversational yet informative tone suitable for hobbyists, survivalists, and tech enthusiasts.\n\nEnsure clarity and readability, avoiding overly technical jargon unless necessary.\n\nIncorporate examples, images, or code snippets where helpful, using Markdown formatting.\n\nWrite engaging summaries that entice readers to continue.\n\nMaintain consistency in formatting, using proper headers, bold, italics, and links.\n\nYour role is to generate high-quality blog posts that are useful, engaging, and optimized for readability in Markdown format for pelican blog."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        -460,
+        -240
+      ],
+      "id": "9ffcf78b-b09b-4ed3-92c2-aa1ef2cc85b0",
+      "name": "Blog Agent"
+    },
+    {
+      "parameters": {
+        "name": "researchAgent",
+        "description": "Call this tool to search the internet for additional data",
+        "workflowId": {
+          "__rl": true,
+          "value": "rO18JRnStm82KXPu",
+          "mode": "list",
+          "cachedResultName": "Research Agent"
+        }
+      },
+      "id": "befafab7-f7d8-404f-9c79-3e98f7becb56",
+      "name": "researchAgent",
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        -140,
+        60
+      ]
+    }
+  ],
+  "pinData": {
+    "Execute Workflow Trigger": [
+      {
+        "json": {
+          "query": "can you get me 3 articles about the election"
+        }
+      }
+    ]
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-04-06T18:00:17.187Z",
+  "versionId": "f22b6753-2c86-4af9-bc21-53e1809cb085"
+}
