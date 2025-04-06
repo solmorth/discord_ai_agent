@@ -1,0 +1,60 @@
+{
+  "active": false,
+  "connections": {
+    "Gmail Trigger": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "createdAt": "2025-03-31T21:21:19.427Z",
+  "id": "fJ3TcidnSqwAHjNn",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Invoice agent",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyHour"
+            }
+          ]
+        },
+        "simple": false,
+        "filters": {
+          "q": "faktura"
+        },
+        "options": {
+          "downloadAttachments": true
+        }
+      },
+      "type": "n8n-nodes-base.gmailTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -680,
+        -20
+      ],
+      "id": "50cc5dab-60ad-4be0-97e1-8b29b4380f72",
+      "name": "Gmail Trigger",
+      "notesInFlow": false,
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "u3kos3MyJBghbqvV",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-03-31T22:14:58.927Z",
+  "versionId": "804cb467-e991-422b-bd26-ddf0ec7f79c9"
+}
