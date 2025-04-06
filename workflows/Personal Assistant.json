@@ -1,0 +1,695 @@
+{
+  "active": true,
+  "connections": {
+    "researchAgent": {
+      "ai_tool": [
+        [
+          {
+            "node": "Personal Assistant",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Vector Store Tool": {
+      "ai_tool": [
+        [
+          {
+            "node": "Personal Assistant",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Personal Assistant": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "calendarAgent": {
+      "ai_tool": [
+        [
+          {
+            "node": "Personal Assistant",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "emailAgent": {
+      "ai_tool": [
+        [
+          {
+            "node": "Personal Assistant",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ollama Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Personal Assistant",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase Vector Store": {
+      "ai_vectorStore": [
+        [
+          {
+            "node": "Vector Store Tool",
+            "type": "ai_vectorStore",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings Ollama": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Supabase Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ollama Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Vector Store Tool",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If has SessionId": {
+      "main": [
+        [
+          {
+            "node": "Set with SessionId",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Set with GeneratedID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set with SessionId": {
+      "main": [
+        [
+          {
+            "node": "Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set with GeneratedID": {
+      "main": [
+        [
+          {
+            "node": "Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Data": {
+      "main": [
+        [
+          {
+            "node": "Personal Assistant",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Discord Trigger": {
+      "main": [
+        [
+          {
+            "node": "If has SessionId",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "blogAgent": {
+      "ai_tool": [
+        [
+          {
+            "node": "Personal Assistant",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Discord": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Error Trigger": {
+      "main": [
+        [
+          {
+            "node": "Discord1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Personal Assistant",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Discord",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-03-20T13:34:06.172Z",
+  "id": "kcJUrG3G81woza0v",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Personal Assistant",
+  "nodes": [
+    {
+      "parameters": {
+        "name": "researchAgent",
+        "description": "Call this tool to search the internet to answer the user's question",
+        "workflowId": {
+          "__rl": true,
+          "value": "rO18JRnStm82KXPu",
+          "mode": "list",
+          "cachedResultName": "Research Agent"
+        }
+      },
+      "id": "1a20674a-bdf5-4262-bd00-e0777b3a75ef",
+      "name": "researchAgent",
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        -300,
+        360
+      ]
+    },
+    {
+      "parameters": {
+        "name": "data",
+        "description": "Retrieves information about company projects"
+      },
+      "id": "ef0b7d18-08ac-466c-92c3-e3d95b63bc30",
+      "name": "Vector Store Tool",
+      "type": "@n8n/n8n-nodes-langchain.toolVectorStore",
+      "typeVersion": 1,
+      "position": [
+        -180,
+        362.5
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('If has SessionId').item.json.content }}",
+        "options": {
+          "systemMessage": "=You are a personal assistant AI Agent designed to handle various tasks efficiently. Act as HAL 9000 from space odyssey. Your primary role is to manage contacts, emails, calendar events for the user and research for information in internet. You have access to tools to help you fulfill requests:\n\nContacts Data: Use this when you need to look up contact information like an email address. You need to use this tool BEFORE sending an email or BEFORE getting emails.\n\nEmail Agent: Use this for handling all email-related actions, like sending messages, setting up replies, or forwarding emails.\n\nCalendar Agent: Use this for scheduling, updating, or managing calendar events.\n\nResearch Agent: Call this tool to search the internet to answer the user's question\n\nBlog Agent: Call this tool to write blog post.\n\nWhen a task requires using one or more of these tools, make sure to identify which tool is most appropriate, pass along the relevant details, and execute the actions needed to complete the task. Your goal is to be proactive, precise, and organized in managing these resources to provide a smooth experience for the user.\n\nHere is the current time/date: {{ $now.format('DD')}}"
+        }
+      },
+      "id": "ea484da0-49aa-402f-a219-b4e8c45b851d",
+      "name": "Personal Assistant",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        -180,
+        140
+      ]
+    },
+    {
+      "parameters": {
+        "name": "calendarAgent",
+        "description": "Call this tool for calendar actions",
+        "workflowId": {
+          "__rl": true,
+          "value": "JDuzx8lvNmB86N30",
+          "mode": "list",
+          "cachedResultName": "Calendar Agent"
+        }
+      },
+      "id": "4ba71f9d-db49-4379-aca2-8b5bd6321eb0",
+      "name": "calendarAgent",
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        116,
+        360
+      ]
+    },
+    {
+      "parameters": {
+        "name": "emailAgent",
+        "description": "Call this tool for email actions",
+        "workflowId": {
+          "__rl": true,
+          "value": "eYBlc3KhrsOZpAGl",
+          "mode": "list",
+          "cachedResultName": "Email Agent"
+        }
+      },
+      "id": "2381c63a-4ae1-456e-999e-6a9b663ad9cd",
+      "name": "emailAgent",
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        236,
+        360
+      ]
+    },
+    {
+      "parameters": {
+        "model": "llama3.1:latest",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "typeVersion": 1,
+      "position": [
+        -580,
+        360
+      ],
+      "id": "d3dca4b0-a304-4816-bf98-e6ce5f9b3908",
+      "name": "Ollama Chat Model",
+      "credentials": {
+        "ollamaApi": {
+          "id": "wlWbc5n6MTeCl395",
+          "name": "Ollama PC"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "tableName": {
+          "__rl": true,
+          "value": "documents",
+          "mode": "list",
+          "cachedResultName": "documents"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1,
+      "position": [
+        -284,
+        562.5
+      ],
+      "id": "7e0dd43d-bd03-4acd-8da3-cc2fa238e099",
+      "name": "Supabase Vector Store",
+      "credentials": {
+        "supabaseApi": {
+          "id": "9rWK4q6J02nHeST5",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "nomic-embed-text:latest"
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOllama",
+      "typeVersion": 1,
+      "position": [
+        -196,
+        760
+      ],
+      "id": "873f81fb-bc2d-4bb5-ad6c-6e98020775eb",
+      "name": "Embeddings Ollama",
+      "credentials": {
+        "ollamaApi": {
+          "id": "RVEpr4DpMNzTk6hF",
+          "name": "Ollama account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "llama3.1:latest",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmOllama",
+      "typeVersion": 1,
+      "position": [
+        12,
+        560
+      ],
+      "id": "4271650a-86c2-4432-b05b-813b817d50b4",
+      "name": "Ollama Model",
+      "credentials": {
+        "ollamaApi": {
+          "id": "RVEpr4DpMNzTk6hF",
+          "name": "Ollama account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "guildId": {
+          "__rl": true,
+          "value": "1165886644780544020",
+          "mode": "list",
+          "cachedResultName": "Home Ai",
+          "cachedResultUrl": "https://discord.com/channels/1165886644780544020"
+        },
+        "channelId": {
+          "__rl": true,
+          "value": "1165886645569064972",
+          "mode": "list",
+          "cachedResultName": "general",
+          "cachedResultUrl": "https://discord.com/channels/1165886644780544020/1165886645569064972"
+        },
+        "content": "={{ $json.message }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        1040,
+        160
+      ],
+      "id": "c49ce310-e08f-41f5-9fb6-c414fb387691",
+      "name": "Discord",
+      "webhookId": "7df2251f-0ed1-40ef-afe5-5889b552e197",
+      "credentials": {
+        "discordBotApi": {
+          "id": "oDeCDLQh2A6pcbLX",
+          "name": "Discord Bot account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "id": "d4692a5d-8c48-4531-ab0e-6c2ee4dee513",
+      "name": "Data",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -760,
+        140
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "a7b94cfd-bd75-4a87-82f2-d903129bd236",
+              "leftValue": "={{ $json.body.sessionId }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "b6299014-5f67-490c-a097-efbbc85f95a8",
+      "name": "If has SessionId",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        -1200,
+        140
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d23dcfe6-87e4-4dad-b9cc-c1bbb52291eb",
+              "name": "sessionId",
+              "value": "={{ $json.body.sessionId }}",
+              "type": "string"
+            },
+            {
+              "id": "90072504-b82a-4514-93ec-7d907397361c",
+              "name": "contactMessage",
+              "value": "={{ $json.body.contactMessage }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "67c13e1e-4093-4ba4-a30f-7c517308b8fc",
+      "name": "Set with SessionId",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.3,
+      "position": [
+        -980,
+        40
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d23dcfe6-87e4-4dad-b9cc-c1bbb52291eb",
+              "name": "sessionId",
+              "value": "={{(+new Date).toString(36).slice(-5) + Math.random().toString(36).substr(2, 5)}}",
+              "type": "string"
+            },
+            {
+              "id": "90072504-b82a-4514-93ec-7d907397361c",
+              "name": "contactMessage",
+              "value": "={{ $json.body.contactMessage }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "6524c765-df95-48f0-9052-853cf6e0c42a",
+      "name": "Set with GeneratedID",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.3,
+      "position": [
+        -980,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "guildIds": [
+          "1165886644780544020"
+        ],
+        "channelIds": [
+          "1165886645569064972"
+        ],
+        "pattern": "every",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-discord-trigger.discordTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1420,
+        140
+      ],
+      "id": "9e0027b0-9014-4480-8dd7-60a303a88e41",
+      "name": "Discord Trigger",
+      "credentials": {
+        "discordBotTriggerApi": {
+          "id": "4LZYpA4U01jfdp2d",
+          "name": "Discord Bot Trigger account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "name": "blogAgent",
+        "description": "Call this tool to write blogpost",
+        "workflowId": {
+          "__rl": true,
+          "value": "3TwbdLzKpZIWMWRI",
+          "mode": "list",
+          "cachedResultName": "Blog agent"
+        }
+      },
+      "id": "509280f9-a6d1-4206-a567-eac2fa7f5c72",
+      "name": "blogAgent",
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        356,
+        360
+      ]
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1420,
+        700
+      ],
+      "id": "a68f4fc9-6cbb-420f-82f2-351746efe4f2",
+      "name": "Error Trigger"
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "guildId": {
+          "__rl": true,
+          "value": "1165886644780544020",
+          "mode": "list",
+          "cachedResultName": "Home Ai",
+          "cachedResultUrl": "https://discord.com/channels/1165886644780544020"
+        },
+        "channelId": {
+          "__rl": true,
+          "value": "1165886645569064972",
+          "mode": "list",
+          "cachedResultName": "general",
+          "cachedResultUrl": "https://discord.com/channels/1165886644780544020/1165886645569064972"
+        },
+        "content": "={{ $json.output }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        -1200,
+        700
+      ],
+      "id": "569ac89d-550e-4bea-92f3-0ff279d76456",
+      "name": "Discord1",
+      "webhookId": "7df2251f-0ed1-40ef-afe5-5889b552e197",
+      "credentials": {
+        "discordBotApi": {
+          "id": "oDeCDLQh2A6pcbLX",
+          "name": "Discord Bot account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -420,
+        360
+      ],
+      "id": "feeab7bb-e677-484d-9cd4-99e8cff87722",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "jsCode": "const maxLength = 2000; // Define chunk size\nconst text = $input.first().json.output; // Replace with your input field name\nconst chunks = [];\nlet start = 0;\n\nwhile (start < text.length) {\n    let end = Math.min(start + maxLength, text.length);\n    // Ensure splitting doesn't break sentences\n    if (text[end] !== ' ' && end < text.length) {\n        end = text.lastIndexOf(' ', end);\n    }\n    const chunk = text.slice(start, end);\n    chunks.push(chunk);\n    start = end;\n}\n\n// Calculate total number of chunks\nconst totalChunks = chunks.length;\n\n// Add chunk count to each chunk's output\nreturn chunks.map((chunk, index) => ({\n    json: {\n        message: chunk,\n        chunkIndex: index + 1, // Current chunk number (1-based index)\n        totalChunks: totalChunks, // Total number of chunks\n    },\n}));"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        400,
+        100
+      ],
+      "id": "8d01bca2-de3c-48d1-a5c4-c97229ac314d",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "batchSize": "={{ $json.totalChunks }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        700,
+        120
+      ],
+      "id": "a660f048-e313-49e8-91f2-21e8dccbf35f",
+      "name": "Loop Over Items"
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-04-06T18:51:10.528Z",
+  "versionId": "090fc9bb-e982-4fdf-b56a-c5a772e8a3cf"
+}
