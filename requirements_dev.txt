@@ -1,6 +1,0 @@
-vulture
-ruff
-mypy
-pre-commit
-pytest
-types-requests
